@@ -10,7 +10,7 @@
 ## Usage
 
 ```
-python script_name.py [-h] [-d DAYS] [-ic] [-p PROFILE]
+python usage.py [-h] [-d DAYS] [-ic] [-p PROFILE]
 ```
 
 ## Command-line Arguments
@@ -26,22 +26,22 @@ The script supports the following command-line arguments:
 
 1. Run the script with default values:
 ```
-python script_name.py
+python usage.py
 ```
 
 2. Specify the number of days to go back:
 ```
-python script_name.py -d 7
+python usage.py -d 7
 ```
 
 3. Ignore credits:
 ```
-python script_name.py -ic
+python usage.py -ic
 ```
 
 4. Specify the AWS profile:
 ```
-python script_name.py -p myprofile
+python usage.py -p myprofile
 ```
 
 ## AWS IAM permissions
