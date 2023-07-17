@@ -25,13 +25,16 @@ def get_account_name(account_id):
 def print_histogram(services):
     max_length = 40  # Maximum length of histogram bar
     max_cost = max(services.values())
+    # Find the maximum length of service names
+    max_name_length = max(len(name) for name in services.keys())
     # Sort services by cost in descending order
     sorted_services = sorted(services.items(), key=lambda x: x[1], reverse=True)
     for service, cost in sorted_services:
         # Compute length of bar as proportion of max cost
         bar_length = int(cost / max_cost * max_length)
         bar = '=' * bar_length
-        print(f"{service:20} | {bar} {cost:.5f}")
+        # Adjust the column width dynamically based on the length of the service name
+        print(f"{service:{max_name_length}} | {bar} {cost:.5f}")
 
 def get_cost_and_usage(num_days, ignore_credits, visualize):
     # Get current date and previous day
