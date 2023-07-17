@@ -7,7 +7,7 @@
 - Python 3.x
 - AWS CLI installed and configured
 
-## Usage
+## Get a general Usage Overview
 
 ```
 python usage.py [-h] [-d DAYS] [-ic] [-p PROFILE] [-v]
@@ -40,29 +40,7 @@ AWSCloudTrail      | === 15.00
 
 In this example, the AWS account 'My AWS Account' has four services with costs. Amazon EC2 has the highest cost, followed by Amazon RDS, Amazon S3, and AWS CloudTrail. The length of each bar is proportional to the cost of the corresponding service.
 
-## Examples
-
-1. Run the script with default values:
-```
-python usage.py
-```
-
-2. Specify the number of days to go back:
-```
-python usage.py -d 7
-```
-
-3. Ignore credits:
-```
-python usage.py -ic
-```
-
-4. Specify the AWS profile:
-```
-python usage.py -p myprofile
-```
-
-## AWS IAM permissions
+### AWS IAM permissions
 Create an IAM user with these permissions.
 
 ```
@@ -84,6 +62,80 @@ Create an IAM user with these permissions.
     ]
 }
 ```
+
+## AWS Unattached EBS Volumes Finder
+
+This Python script uses the Boto3 AWS SDK to find all unattached EBS volumes in your AWS account. It groups these volumes by region and sorts them within each group by size (as a proxy for price) in descending order. The script also outputs the AWS account number and account alias.
+
+### Requirements
+
+- Python 3.6 or later
+- Boto3 library (`pip install boto3`)
+
+### AWS Permissions
+
+The script requires the following AWS IAM permissions:
+
+- `ec2:DescribeVolumes`
+- `ec2:DescribeRegions`
+- `iam:ListAccountAliases`
+- `sts:GetCallerIdentity`
+
+Here is an example of the IAM policy in JSON format:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeVolumes",
+                "ec2:DescribeRegions",
+                "iam:ListAccountAliases",
+                "sts:GetCallerIdentity"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+### Usage
+
+You can run this script from the command line with your AWS profile name as an argument:
+
+```bash
+python ebs-unattached.py --profile myprofile
+```
+
+Replace `myprofile` with your AWS profile name.
+
+### Output
+
+The script will output the AWS account number and alias, followed by the unattached EBS volumes grouped by region. For each region, it will also output the number of unattached volumes. Within each region group, the volumes are sorted by size in descending order.
+
+Sure, the output of the script will look something like this:
+
+```
+Account ID: 123456789012, Account Alias: my-account-alias
+
+Region: us-east-1 (2 unattached volumes)
+  Volume ID: vol-0abcd1234efgh5678, Size: 100 GB
+  Volume ID: vol-0ijkl9012mnop3456, Size: 50 GB
+
+Region: us-west-1 (1 unattached volumes)
+  Volume ID: vol-0qrst7890uvwx1234, Size: 200 GB
+
+Region: eu-west-1 (0 unattached volumes)
+
+Region: ap-southeast-1 (3 unattached volumes)
+  Volume ID: vol-0cdef4567opqr8910, Size: 150 GB
+  Volume ID: vol-0stuv1121wxyz3434, Size: 100 GB
+  Volume ID: vol-0abcd1234efgh5678, Size: 50 GB
+```
+
 ## License
 
 [MIT License](LICENSE)
