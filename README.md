@@ -116,8 +116,6 @@ Replace `myprofile` with your AWS profile name.
 
 The script will output the AWS account number and alias, followed by the unattached EBS volumes grouped by region. For each region, it will also output the number of unattached volumes. Within each region group, the volumes are sorted by size in descending order.
 
-Sure, the output of the script will look something like this:
-
 ```
 Account ID: 123456789012, Account Alias: my-account-alias
 
