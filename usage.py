@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser(description='Get the number of days, ignore-cre
 parser.add_argument('-d', '--days', type=int, help='Number of days to go back', default=1)
 parser.add_argument('-ic', '--ignore-credits', action='store_true', help='Ignore credits')
 parser.add_argument('-p', '--profile', type=str, help='AWS profile', default='default')
+parser.add_argument('-v', '--visualize', action='store_true', help='Visualize cost data')
 args = parser.parse_args()
 
 # Set AWS profile and region
@@ -21,7 +22,18 @@ def get_account_name(account_id):
     response = organizations.describe_account(AccountId=account_id)
     return response['Account']['Name']
 
-def get_cost_and_usage(num_days, ignore_credits):
+def print_histogram(services):
+    max_length = 40  # Maximum length of histogram bar
+    max_cost = max(services.values())
+    # Sort services by cost in descending order
+    sorted_services = sorted(services.items(), key=lambda x: x[1], reverse=True)
+    for service, cost in sorted_services:
+        # Compute length of bar as proportion of max cost
+        bar_length = int(cost / max_cost * max_length)
+        bar = '=' * bar_length
+        print(f"{service:20} | {bar} {cost:.5f}")
+
+def get_cost_and_usage(num_days, ignore_credits, visualize):
     # Get current date and previous day
     end = datetime.datetime.now().date()
     start = end - datetime.timedelta(days=num_days)
@@ -85,10 +97,15 @@ def get_cost_and_usage(num_days, ignore_credits):
 
     # Print results
     for (linked_account, account_name), services in results.items():
-        print(f"Linked Account: {linked_account} ({account_name})")
-        for service, cost in services.items():
-            print(f"  Service: {service}")
-            print(f"  Blended Cost: {cost:.5f}")
+        print(f"\nLinked Account: {linked_account} ({account_name})")
+        if visualize:
+            print_histogram(services)
+        else:
+            # Sort services by cost in descending order before printing
+            sorted_services = sorted(services.items(), key=lambda x: x[1], reverse=True)
+            for service, cost in sorted_services:
+                print(f"  Service: {service}")
+                print(f"  Blended Cost: {cost:.5f}")
 
 # Calling the function with the specified number of days and ignore credits option
-get_cost_and_usage(args.days, args.ignore_credits)
+get_cost_and_usage(args.days, args.ignore_credits, args.visualize)
