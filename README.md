@@ -43,7 +43,7 @@ In this example, the AWS account 'My AWS Account' has four services with costs. 
 ### AWS IAM permissions
 Create an IAM user with these permissions.
 
-```
+```json
 {
     "Version": "2012-10-17",
     "Statement": [
