@@ -142,8 +142,8 @@ It retrieves information about AWS CloudWatch Log Groups and has the ability to 
 ### Usage
 The script supports the following command-line arguments:
 
--p or --profile: The AWS profile to use. Default is 'default'.
---show-last-log-entry: Show the date of the last log entry in each log group.
+-p or --profile: The AWS profile to use. Default is 'default'.  
+--show-last-log-entry: Show the date of the last log entry in each log group.  
 --show-without-retention: Only show log groups without a retention policy.
 
 Here's how to run the script:
