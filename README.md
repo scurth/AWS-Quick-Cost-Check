@@ -134,6 +134,56 @@ Region: ap-southeast-1 (3 unattached volumes)
   Volume ID: vol-0abcd1234efgh5678, Size: 50 GB
 ```
 
+## AWS CloudWatch Log Groups Script
+
+This script uses the AWS SDK for Python (Boto3) to interact with the AWS CloudWatch Logs API.
+It retrieves information about AWS CloudWatch Log Groups and has the ability to filter and format the output based on command-line arguments.
+
+### Usage
+The script supports the following command-line arguments:
+
+-p or --profile: The AWS profile to use. Default is 'default'.
+--show-last-log-entry: Show the date of the last log entry in each log group.
+--show-without-retention: Only show log groups without a retention policy.
+
+Here's how to run the script:
+
+```bash
+python script.py --profile your_profile --show-last-log-entry --show-without-retention
+```
+
+This will output information about AWS CloudWatch Log Groups that don't have a retention policy set and will include the date of the last log entry in each log group.
+
+### Sample Output
+```bash
+Log Group: /aws/lambda/myLambdaFunction
+Number of Log Streams: 8
+Last Log Entry: 2023-07-22 13:14:15.123456
+
+Log Group: /aws/lambda/anotherLambdaFunction
+Number of Log Streams: 3
+Last Log Entry: 2023-07-21 18:20:30.123456
+```
+
+### IAM Permissions
+The script uses the following AWS CloudWatch Logs API actions, so your IAM policy should allow these:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
 ## License
 
 [MIT License](LICENSE)
