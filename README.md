@@ -184,6 +184,91 @@ The script uses the following AWS CloudWatch Logs API actions, so your IAM polic
 }
 ```
 
+## Sure, here's a `README.md` file for the provided Python script:
+
+## Unattached Elastic IPs Finder
+
+This Python script helps you find unattached Elastic IPs (EIPs) in your AWS account. It uses the Boto3 library to interact with AWS services, so you need to have the Boto3 library installed. Make sure you have configured your AWS credentials properly using either environment variables or AWS CLI.
+
+### Prerequisites
+
+- Python 3.x
+- Boto3 library (can be installed via `pip install boto3`)
+
+### Usage
+
+1. Clone this repository or download the `eip-unattached.py` script.
+
+2. Install the required dependencies using pip:
+
+   ```bash
+   pip install boto3
+   ```
+
+3. Run the script:
+
+   ```bash
+   python eip-unattached.py --profile YOUR_AWS_PROFILE_NAME
+   ```
+
+   Replace `YOUR_AWS_PROFILE_NAME` with the AWS CLI profile you want to use for the AWS API calls. The profile should have the necessary permissions to list EC2 instances and Elastic IPs.
+
+### How it works
+
+The script performs the following actions:
+
+1. Retrieves your AWS account ID and account alias using the provided AWS CLI profile.
+
+2. Fetches all available AWS regions using the EC2 client from the `us-east-1` region (the default region).
+
+3. Iterates through each region to find unattached Elastic IPs.
+
+4. Prints the details of all unattached Elastic IPs found, including the public IP and allocation ID.
+
+### IAM Permissions
+The script uses the following AWS CloudWatch Logs API actions, so your IAM policy should allow these:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeRegions",
+                "ec2:DescribeAddresses",
+                "sts:GetCallerIdentity",
+                "iam:ListAccountAliases"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstances"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+### New AWS IPAM Service
+AWS has introduced a new service called IP Address Management (IPAM), which aims to help you better manage your IP address allocations in AWS.
+You can read more about the service in the following links:
+
+- [AWS IP Address Management (IPAM) Blog Post](https://aws.amazon.com/de/blogs/aws/new-aws-public-ipv4-address-charge-public-ip-insights/)
+- [AWS IPAM Documentation](https://docs.aws.amazon.com/vpc/latest/ipam/what-it-is-ipam.html)
+
+With the IPAM service, you can gain insights into your IP allocations and identify any unattached Elastic IPs more efficiently.
+
+### Note
+
+The script uses the `describe_addresses` method from the EC2 client to get information about Elastic IPs in each region.
+It filters out the Elastic IPs that are not attached to any EC2 instance.
+
+Remember to configure your AWS CLI profile correctly before running the script.
+The profile should have the necessary permissions to list Elastic IPs and EC2 instances in all the regions of your AWS account.
+
 ## License
 
 [MIT License](LICENSE)
