@@ -31,7 +31,10 @@ def print_histogram(services):
     sorted_services = sorted(services.items(), key=lambda x: x[1], reverse=True)
     for service, cost in sorted_services:
         # Compute length of bar as proportion of max cost
-        bar_length = int(cost / max_cost * max_length)
+        if max_cost == 0:
+            bar_length = 0
+        else:
+            bar_length = int(cost / max_cost * max_length)
         bar = '=' * bar_length
         # Adjust the column width dynamically based on the length of the service name
         print(f"{service:{max_name_length}} | {bar} {cost:.5f}")
