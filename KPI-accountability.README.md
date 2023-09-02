@@ -72,16 +72,32 @@ python KPI-accountability.py --tag <TAG_KEY> --profile <AWS_PROFILE> --region <A
 ## Example Output
 
 ```
-Overall cost for the period 2023-09-01 to 2023-09-30: $450.84
+python3 KPI-accountability.py --profile myProfile --tag billing
+Active Cost Allocation Tags: ['aws:createdBy', 'aws:ecs:clusterName', 'aws:ecs:serviceName', 'billing', 'generated']
+Overall cost for the period 2023-09-01 to 2023-10-01: $10,927.41
 
 Costs grouped by linked account:
-Linked account '123456789012 (Account-1)': $250.45 (55.54%)
-  Tag value 'productA': $120.22 (48.00%)
-  Tag value 'productB': $100.23 (40.00%)
-  Undefined: 12.00%
 
-Linked account '987654321098 (Account-2)': $200.39 (44.46%)
-  Tag value 'productA': $80.16 (40.00%)
-  Tag value 'productB': $100.23 (50.00%)
-  Undefined: 10.00%
+Linked account '123456789012 (Production-Env)': $7,134.21 (65.31%)
+  Tag value 'billing$core-services': $1,900.32 (26.64%)
+  Tag value 'billing$analytics': $2,211.40 (31.00%)
+  Tag value 'billing$team-a': $1,223.15 (17.15%)
+  Tag value 'billing$team-b': $902.41 (12.65%)
+  Undefined: 12.56%
+
+Linked account '234567890123 (Staging-Env)': $2,750.81 (25.17%)
+  Tag value 'billing$core-services': $1,125.40 (40.92%)
+  Tag value 'billing$analytics': $750.23 (27.27%)
+  Tag value 'billing$team-a': $350.10 (12.73%)
+  Undefined: 19.08%
+
+Linked account '345678901234 (Dev-Env)': $890.30 (8.15%)
+  Tag value 'billing$core-services': $350.12 (39.32%)
+  Tag value 'billing$analytics': $310.11 (34.83%)
+  Tag value 'billing$team-b': $110.09 (12.36%)
+  Undefined: 13.49%
+
+Linked account '456789012345 (Backup-Env)': $152.09 (1.39%)
+  Tag value 'billing$core-services': $92.09 (60.56%)
+  Undefined: 39.44%
 ```
