@@ -39,6 +39,11 @@ The AWS IAM role used to run this script must have the following permissions:
                 "resourcegroupstaggingapi:GetResources"
             ],
             "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "tag:GetResources",
+            "Resource": "*"
         }
     ]
 }
